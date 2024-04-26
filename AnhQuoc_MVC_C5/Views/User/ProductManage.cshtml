@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Product>
+
+@section style
+{
+    <style type="text/css">
+        .thumbnail {
+            min-height: 310px;
+        }
+    </style>
+}
+
+
+@section scripts 
+{
+    <script>
+        $(document).ready(function () {
+            var elements = document.querySelectorAll('.page-item');
+
+            if ('@ViewBag.disablePrevious' == 'False') {
+                elements[0].classList.remove('disabled');
+            }
+            if ('@ViewBag.disableNext' == 'False') {
+                elements[1].classList.remove('disabled');
+            }
+        });
+    </script>    
+}
+
+@if (Model == null)
+{
+
+}
+else
+{
+    if (Model.Count() == 0)
+    {
+        <p>There are currently no products</p>
+    }
+    else
+    {
+        <p>List of available products</p>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                // Sử dụng Thumbnail trong Boostrap
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="" alt="" title="@item.Name" />
+                        <div class="caption">
+                            <h3>@item.Name</h3>
+                            <h4>Giá: @string.Format("{0:C}", item.Price)</h4>
+                            <h4>
+                                Tình trạng:
+                                @if (item.Quantity > 0)
+                                {
+                                    @:Còn hàng
+                                }
+                                else
+                                {
+                                    @:Hết hàng
+                                }
+
+                            </h4>
+                            <p>@item.TinyDes</p>
+                            <p>
+                                <a href="#" class="btn btn-primary" role="button">Chi tiết</a>
+                                <a href="#" class="btn btn-danger" role="button">
+                                    <i class="fa fa-cart-plus"></i>Mua
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <ul class="pagination">
+            <li class="page-item disabled"><a class="page-link" href="@Url.Action("ProductManage", "User", new { catId = Request["catId"], page = ViewBag.curPage - 1 })">Previous</a></li>
+            @for (int i = 0; i < ViewBag.totalPage; i++)
+            {
+                if (ViewBag.curPage == i + 1)
+                {
+                    <li class="page-item active"><a class="page-link" href="@Url.Action("ProductManage", "User", new { catId = Request["catId"], page = ViewBag.curPage - 1 })">@(i + 1)</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" href="@Url.Action("ProductManage", "User", new { catId = Request["catId"], page = ViewBag.curPage - 1 })">@(i + 1)</a></li>
+                }
+            }
+            <li class="page-item disabled"><a class="page-link" href="@Url.Action("ProductManage", "User", new { catId = Request["catId"], page = ViewBag.curPage + 1 })">Next</a></li>
+        </ul>
+    }
+}

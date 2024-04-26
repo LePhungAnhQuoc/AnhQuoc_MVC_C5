@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Product>
+
+@if (Model == null)
+{
+
+}
+else
+{
+    if (Model.Count() == 0)
+    {
+        <p>There are currently no products</p>
+    }
+    else
+    {
+        <p>List of available products</p>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                // Sử dụng Thumbnail trong Boostrap
+                <div style="padding: 8px" class="col-sm-6 col-md-4">
+                    <div id="product-wrapper" class="img-thumbnail" onclick="wrapperClick(@item.Id)">
+                        <img src="" alt="" title="@item.Name" />
+                        <div id="caption">
+                            <h3>@item.Name</h3>
+                            <h4>Giá: @string.Format("{0:C}", item.Price)</h4>
+                            <h4>
+                                Tình trạng:
+                                @if (item.Quantity > 0)
+                                {
+                                    @:Còn hàng
+                                }
+                                else
+                                {
+                                    @:Hết hàng
+                                }
+                            </h4>
+                            <p>@item.TinyDes</p>
+
+                          
+                        </div>
+                        <a href="@Url.Action("Details", "Product", new { id = item.Id })" class="btn btn-success">
+                            <i class="bi bi-arrow-right-circle"></i> Go to details
+                        </a>
+                    </div>
+                </div>              
+            }
+        </div>
+
+        <ul class="pagination mt-5">
+            <li class="page-item disabled"><a class="page-link" href="@Url.Action("Index", "User", new { catId = Request["catId"], page = ViewBag.curPage - 1 })">&laquo;</a></li>
+            @for (int i = 0; i < ViewBag.totalPage; i++)
+            {
+                if (ViewBag.curPage == i + 1)
+                {
+                    <li class="page-item active"><a class="page-link" href="@Url.Action("Index", "User", new { catId = Request["catId"], page = i + 1 })">@(i + 1)</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" href="@Url.Action("Index", "User", new { catId = Request["catId"], page = i + 1 })">@(i + 1)</a></li>
+                }
+            }
+            <li class="page-item disabled"><a class="page-link" href="@Url.Action("Index", "User", new { catId = Request["catId"], page = ViewBag.curPage + 1 })">&raquo;</a></li>
+        </ul>
+    }
+}

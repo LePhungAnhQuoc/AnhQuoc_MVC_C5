@@ -1,0 +1,62 @@
+﻿@model AnhQuoc_MVC_C5.Product
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section style {
+    <style>
+        div#quantity-bar {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        div#quantity-bar>label:nth-child(1) {
+            flex: 1;
+        }
+        div#quantity-touchspin {
+            flex: 10;
+        }
+
+        div#quantity-bar>label:nth-last-child(1) {
+            position: absolute;
+            right: 70px;
+        }
+    </style>    
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("input[name='Quantity']").TouchSpin({
+              buttondown_class: 'btn btn-outline-secondary',
+              buttonup_class: 'btn btn-outline-secondary',
+              min: 1,
+              max: @Model.Quantity,
+            });
+        })
+    </script>
+}
+
+<a href="@Url.Action("Index", "User")" type="button" class="btn btn-primary mb-3">Back to list</a>
+<div>
+    <h1 class="h1-details">@Html.DisplayFor(model => model.Name)</h1>
+    <h4 style="color: gray; margin-left: 5px">@Html.DisplayFor(model => model.Category.Name)</h4>
+
+    <hr style="margin: 15px 0px" />
+    <div id="info-bar" class="row">
+        <label class="col-md-5">Quantity: @Html.DisplayFor(model => model.Quantity)</label>
+        <label>Price: @Html.DisplayFor(model => model.Price)</label>
+    </div>
+    <hr style="margin: 15px 0px" />
+
+    <p>@Html.DisplayFor(model => model.TinyDes)</p>
+    <p>@Html.DisplayFor(model => model.FullDes)</p>
+</div>
+
+
+@{  Html.RenderPartial("_AddNewCart", new ProductQuantity(Model.Id), ViewData); }
+<br /> 

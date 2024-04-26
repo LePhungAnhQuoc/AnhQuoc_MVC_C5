@@ -1,0 +1,142 @@
+﻿@using AnhQuoc_MVC_C5;
+@model IEnumerable<AnhQuoc_MVC_C5.Product>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#AlertBox').removeClass('hide');
+            $('#AlertBox').delay(2000).slideUp(500);
+        });
+
+        function onSelect(sender) {
+            window.location.href = "@Url.Action("Index", "Product")?catId=" + sender.value;
+        }
+
+        $(document).ready(function () {
+            var elements = document.querySelectorAll('.page-item');
+
+            if ('@ViewBag.disablePrevious' == 'False') {
+                elements[0].classList.remove('disabled');
+            }
+            if ('@ViewBag.disableNext' == 'False') {
+                elements[1].classList.remove('disabled');
+            }
+        });
+    </script>
+}
+
+<h1 class="mt-3 mb-3">Product Management</h1>
+<hr />
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div id="AlertBox" class="alert @TempData["AlertType"] hide" role="alert">
+        @TempData["AlertMessage"]
+    </div>
+}
+
+<div class="row mt-3 mb-3">
+    <div class="d-flex col-md-4">
+        <a class="btn btn-success" href="@Url.Action("Add", "Product", null)">Create New</a>
+    </div>
+    <div style="position: relative;" class="col-md-4 search">
+        <select id="selectCat" class="form-select" placeholder="Search by name.." onchange="onSelect(this)">
+
+            @if (Request["catId"] == null)
+            {
+                <option value="-1" selected="selected">Select Category</option>
+            }
+
+            @foreach (Category cat in ViewBag.Categories)
+            {
+                if (Request["catId"] != null && cat.Id == Convert.ToInt32(Request["catId"]))
+                {
+                    <option value="@cat.Id" selected="selected">@cat.Name</option>
+                }
+                else
+                {
+                    <option value="@cat.Id">@cat.Name</option>
+                }
+            }
+        </select>
+    </div>
+
+    <div style="position: relative;" class="col-md-4 search">
+        <input class="form-control" type="search" placeholder="Search by name.." style="padding-left: 33px;">
+        <i style="display: inline;
+                   position: absolute;
+                   left: 23px;
+                   top: 50%;
+                   transform: translate(0px, -50%);" class="bi bi-search"></i>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TinyDes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullDes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category.Name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.LessString(Html.DisplayFor(modelItem => item.Name).ToString(), 20)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TinyDes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullDes)
+            </td>
+            <td>
+                @Html.Price2String(Convert.ToDouble(Html.DisplayFor(modelItem => item.Price).ToString()))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                <a class="link-action-table btn btn-info" href="@Url.Action("Details", "Product", new { id=item.Id })">
+                    <i class="bi bi-info-circle"></i>
+                </a>
+                <a class="link-action-table btn btn-warning" href="@Url.Action("Edit", "Product", new { id=item.Id })">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+                <a id="buttonDelete" class="link-action-table btn btn-danger" href="@Url.Action("Delete", "Product", new { id=item.Id })">
+                    <i class="bi bi-trash3"></i>
+                </a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+<ul class="pagination">
+    <li class="page-item disabled"><a class="page-link" href="@Url.Action("Index", "Product", new { catId = Request["catId"], page = ViewBag.curPage - 1 })">Previous</a></li>
+    <li class="page-item disabled"><a class="page-link" href="@Url.Action("Index", "Product", new { catId = Request["catId"], page = ViewBag.curPage + 1 })">Next</a></li>
+</ul>

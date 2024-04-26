@@ -1,0 +1,38 @@
+﻿@model AnhQuoc_MVC_C5.Category
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2 class="mt-3 mb-3">Edit Category Information</h2>
+<hr />
+
+
+@using (Html.BeginForm("Edit", "Category", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div>
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label col-md-2", @style = "font-weight: bold" })
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row mb-3 mt-3">
+            <div class="col-md-12">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-secondary" })
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

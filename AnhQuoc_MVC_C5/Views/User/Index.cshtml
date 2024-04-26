@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+
+@section style
+{
+    <style type="text/css">
+        .thumbnail {
+            min-height: 310px;
+        }
+
+
+        div#product-wrapper {
+            height: 330px;
+            padding: 10px;
+            position: relative;
+        }
+
+        div#product-wrapper:hover {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        div#caption {
+            position: relative;
+        }
+
+        div#product-wrapper>a {
+            position: absolute;
+            bottom: 0px;
+            margin-bottom: 16px;
+            margin-left: 5px;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <p>List of available categories</p>
+        @Html.Action("GetListCategories", "User")
+    </div>
+    <div class="col-md-9">
+        @Html.Action("ProductManage", "User", new { catId = Request["catId"], page = Request["page"] })
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            if ('@TempData["disablePrevious"]' == 'False') {
+                $('body > div > div > div.col-md-9 > ul > li:nth-child(1)').removeClass('disabled');
+            }
+            if ('@TempData["disableNext"]' == 'False') {
+                $('body > div > div > div.col-md-9 > ul > li:nth-child(7)').removeClass('disabled');
+            }
+        });
+        function wrapperClick(proId) {
+            window.location.href = "@Url.Action("Details", "Product")?id=" + proId;
+        }
+    </script>
+}

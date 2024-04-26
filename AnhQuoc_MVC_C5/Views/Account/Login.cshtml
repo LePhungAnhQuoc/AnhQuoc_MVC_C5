@@ -1,0 +1,70 @@
+﻿@model AnhQuoc_MVC_C5.UserLogin
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@section scripts{
+    <script>
+        $(function () {
+            $('body').css("background-color", "#e6e6e6");
+            $('body > div').css("width", "30%");
+            $('body > div').css("background", "white");
+            $('body > div').css("box-shadow", "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)");
+            $('body > div').css("border-radius", "10px");
+
+            $('body > div > form > div > div').addClass('row');
+
+            $('body > div').css('padding-top', '20px');
+
+            $('.form-group.row').css('margin', '25px 30px');
+            $('body > div > h2').css('text-align', 'center');
+        });
+    </script>
+}
+
+@section style
+{
+    <style>
+        footer {
+            display: none;
+        }
+    </style>
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "form-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "form-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="checkbox" style="margin-left: 45px;">
+            <label>@Html.EditorFor(model => model.RememberMe, new { htmlAttributes = new { @type = "checkbox" } }) Remember me</label>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-9">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}

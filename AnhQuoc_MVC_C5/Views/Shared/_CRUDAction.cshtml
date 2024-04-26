@@ -1,0 +1,10 @@
+﻿
+<a class="link-action-table btn btn-info" href="@Url.Action("Details", ViewBag.ControllerName, new { id=ViewBag.Id })">
+    <i class="bi bi-info-circle"></i>
+</a>
+<a class="link-action-table btn btn-warning" href="@Url.Action("Edit", ViewBag.ControllerName, new { id= ViewBag.Id })">
+    <i class="bi bi-pencil-square"></i>
+</a>
+<a id="buttonDelete" class="link-action-table btn btn-danger" href="@Url.Action("Delete", ViewBag.ControllerName, new { id=ViewBag.Id })">
+    <i class="bi bi-trash3"></i>
+</a>

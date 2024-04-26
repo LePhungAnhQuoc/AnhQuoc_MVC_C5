@@ -1,0 +1,10 @@
+﻿@model IEnumerable<Category>
+
+<div class="list-group">
+    @foreach (var item in Model)
+    {
+        <a href="@Url.Action("Index", "User", new { catId=item.Id, page = 1 })" class="list-group-item">
+            @item.Name
+        </a>
+    }
+</div>
